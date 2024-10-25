@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./CodeTestApi
+      dockerfile: ./CodeTestApi.Host/Dockerfile 
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+  angular:
+    build:
+      context: ./CodeTestFrontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./CodeTestFrontend:/app  # Monta solo el código fuente en la carpeta correcta
+      - /app/node_modules  # Mantén la carpeta de node_modules separada
+    ports:
+      - "4200:4200"
+    command: npm run start
+
+volumes:
+  mongo-data:

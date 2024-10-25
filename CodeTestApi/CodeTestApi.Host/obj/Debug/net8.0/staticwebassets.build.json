@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "3bkV4weNX1gZpVk9UReNozxPvhTToGD+anJwMMIT/K0=",
+  "Source": "CodeTestApi.Host",
+  "BasePath": "_content/CodeTestApi.Host",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
