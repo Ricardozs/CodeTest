@@ -80,7 +80,7 @@ public class Program
                 Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "Type 'Bearer' [space] and your token JWT in this field."
+                Description = "Paste your token JWT in this field."
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
