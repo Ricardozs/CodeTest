@@ -5,6 +5,6 @@ public class Vehicle
     public required string Brand { get; set; }
     public required string Model { get; set; }
     public DateTime ManufactureDate { get; set; }
-    public bool IsAvailable { get; set; }
-    public string? RentedBy { get; set; }
+    public long PricePerDay { get; set; }
+    public List<RentalPeriod> RentalPeriods { get; set; } = [];
 }

@@ -15,10 +15,8 @@ public class VehicleControllerTests : IClassFixture<CustomWebApplicationFactory<
     [Fact]
     public async Task GetAvailableVehicles_Should_Return_Ok()
     {
-        // Act
         var response = await _client.GetAsync("/api/vehicles/available");
 
-        // Assert
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

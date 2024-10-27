@@ -4,6 +4,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace CodeTestApi.Application.Commands.Vehicles
 {
     public class ReturnVehicleCommand : IRequest<Unit>
     {
-        public string Id { get; set; }
-        public ReturnVehicleCommand(string id) 
+        public string VehicleId { get; set; }
+        public string UserId { get; set; }
+        public ReturnVehicleCommand(string vehicleId, string userId) 
         {
-            Id = id;
+            VehicleId = vehicleId;
+            UserId = userId;
         }
     }
 
@@ -27,16 +30,14 @@ namespace CodeTestApi.Application.Commands.Vehicles
 
         public override async Task<Unit> Handle(ReturnVehicleCommand request, CancellationToken cancellationToken)
         {
-            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
+
+            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.VehicleId);
             if (vehicle is null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Vehicle not found");
             }
 
-            vehicle.IsAvailable = true;
-            vehicle.RentedBy = null;
-
-            await _vehicleRepository.UpdateVehicleAsync(vehicle);
+            await _vehicleRepository.ReturnVehicleAsync(request.VehicleId, request.UserId);
 
             return Unit.Value;
         }

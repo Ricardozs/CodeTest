@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using System.Security.Claims;
 using System.Text;
 
 public class Program
@@ -14,6 +15,16 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
 
         var key = Encoding.UTF8.GetBytes("#MySuperSecretKeyThatNoOneWillGuessAndSuperLongEnough123456789!$");
 
@@ -31,7 +42,8 @@ public class Program
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                RoleClaimType = ClaimTypes.Role
             };
         });
 
@@ -87,7 +99,11 @@ public class Program
             });
         });
 
+        builder.Logging.AddConsole();
+
         var app = builder.Build();
+
+        app.UseCors("AllowAll");
 
         using (var scope = app.Services.CreateScope())
         {
@@ -104,7 +120,7 @@ public class Program
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("http://localhost:8080/swagger/v1/swagger.json", "My API V1");
-            c.RoutePrefix = string.Empty;  // Hace que Swagger sea la página de inicio
+            c.RoutePrefix = string.Empty;
         });
 
 

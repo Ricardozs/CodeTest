@@ -13,3 +13,4 @@ C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Application\obj\Debug\
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Application\obj\Debug\net8.0\refint\CodeTestApi.Application.dll
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Application\obj\Debug\net8.0\CodeTestApi.Application.pdb
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Application\obj\Debug\net8.0\ref\CodeTestApi.Application.dll
+C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Application\obj\Debug\net8.0\CodeTestApi.Application.sourcelink.json

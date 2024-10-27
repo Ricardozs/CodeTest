@@ -4,6 +4,7 @@ using CodeTestApi.Application.Commands.Vehicles;
 using CodeTestApi.Application.Queries.Vehicles;
 using CodeTestApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using CodeTestApi.Host.DTO;
 
 [Authorize]
 [ApiController]
@@ -11,10 +12,12 @@ using Microsoft.AspNetCore.Authorization;
 public class VehiclesController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<VehiclesController> _logger;
 
-    public VehiclesController(IMediator mediator)
+    public VehiclesController(IMediator mediator, ILogger<VehiclesController> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [Authorize(Roles = "Admin")]
@@ -51,9 +54,9 @@ public class VehiclesController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("available")]
-    public async Task<IActionResult> GetAvailableVehicles()
+    public async Task<IActionResult> GetAvailableVehicles([FromQuery] GetAvailableVehiclesQuery query)
     {
-        var vehicles = await _mediator.Send(new GetAvailableVehiclesQuery());
+        var vehicles = await _mediator.Send(query);
         return Ok(vehicles);
     }
 
@@ -74,11 +77,11 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpPatch("vehicle/rent/{id}")]
-    public async Task<IActionResult> RentVehicle(string id)
+    public async Task<IActionResult> RentVehicle(string id, [FromBody] RentVehicleRequest request)
     {
         try
         {
-            await _mediator.Send(new RentVehicleCommand(id, User));
+            await _mediator.Send(new RentVehicleCommand(id, request.StartDate, request.EndDate, User));
             return NoContent();
         }
         catch (KeyNotFoundException)
@@ -89,12 +92,12 @@ public class VehiclesController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpPatch("vehicle/return/{id}")]
-    public async Task<IActionResult> ReturnVehicle(string id)
+    [HttpPatch("vehicle/return/{vehicleId}")]
+    public async Task<IActionResult> ReturnVehicle(string vehicleId, [FromBody] string userdId)
     {
         try
         {
-            await _mediator.Send(new ReturnVehicleCommand(id));
+            await _mediator.Send(new ReturnVehicleCommand(vehicleId, userdId));
             return NoContent();
         }
         catch (KeyNotFoundException)

@@ -9,6 +9,7 @@ public class CreateVehicleCommand : IRequest<Vehicle>
     public required string Brand { get; set; }
     public required string Model { get; set; }
     public DateTime ManufactureDate { get; set; }
+    public long PricePerDay { get; set; }
 }
 
 public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, Vehicle>
@@ -22,7 +23,7 @@ public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, Veh
         var currentYear = DateTime.Now.Year;
         if (request.ManufactureDate.Year < currentYear - 5)
         {
-            throw new InvalidOperationException("Vehicule cannot be more than 5 years");
+            throw new InvalidOperationException("Vehicule cannot be more than 5 years older");
         }
 
         var vehicle = new Vehicle
@@ -31,7 +32,8 @@ public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, Veh
             Brand = request.Brand, 
             Model = request.Model, 
             ManufactureDate = request.ManufactureDate, 
-            IsAvailable = true 
+            PricePerDay = request.PricePerDay,
+            RentalPeriods = []
         };
 
         await _vehicleRepository.AddVehicleAsync(vehicle);

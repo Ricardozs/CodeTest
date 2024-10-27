@@ -467,3 +467,4 @@ C:\Users\ricar\Documents\CodeTest\CodeTestApi\IntegrationTests\obj\Debug\net8.0\
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\IntegrationTests\obj\Debug\net8.0\IntegrationTests.pdb
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\IntegrationTests\obj\Debug\net8.0\IntegrationTests.genruntimeconfig.cache
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\IntegrationTests\obj\Debug\net8.0\ref\IntegrationTests.dll
+C:\Users\ricar\Documents\CodeTest\CodeTestApi\IntegrationTests\obj\Debug\net8.0\IntegrationTests.sourcelink.json

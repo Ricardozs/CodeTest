@@ -12,18 +12,16 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        _mongoDbRunner = MongoDbRunner.Start();  // Iniciar Mongo2Go
+        _mongoDbRunner = MongoDbRunner.Start();
 
         builder.ConfigureServices(services =>
         {
-            // Eliminar la configuración original de MongoDB
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IMongoClient));
             if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
 
-            // Inyectar Mongo2Go como el MongoClient para pruebas
             services.AddSingleton<IMongoClient, MongoClient>(sp =>
             {
                 return new MongoClient(_mongoDbRunner.ConnectionString);
@@ -32,7 +30,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             services.AddScoped<IMongoDatabase>(sp =>
             {
                 var client = sp.GetRequiredService<IMongoClient>();
-                return client.GetDatabase("TestDb");  // Usa una base de datos de prueba
+                return client.GetDatabase("TestDb");
             });
         });
 
@@ -42,6 +40,6 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        _mongoDbRunner?.Dispose();  // Detener Mongo2Go cuando terminen las pruebas
+        _mongoDbRunner?.Dispose();
     }
 }

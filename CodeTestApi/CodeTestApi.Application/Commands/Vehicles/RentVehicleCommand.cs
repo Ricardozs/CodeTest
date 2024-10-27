@@ -1,4 +1,5 @@
 ﻿using CodeTestApi.Application.Base_Handlers;
+using CodeTestApi.Domain.Entities;
 using CodeTestApi.Domain.Interfaces;
 using MediatR;
 using System.Security.Claims;
@@ -8,11 +9,15 @@ namespace CodeTestApi.Application.Commands.Vehicles
     public class RentVehicleCommand : IRequest<Unit>
     {
         public string Id { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public ClaimsPrincipal ClaimsPrincipal { get; set; }
-        public RentVehicleCommand(string id, ClaimsPrincipal claimsPrincipal)
+        public RentVehicleCommand(string id, DateTime startDate, DateTime endDate, ClaimsPrincipal claimsPrincipal)
         {
             Id = id;
             ClaimsPrincipal = claimsPrincipal;
+            StartDate = startDate;
+            EndDate = endDate;
         }
     }
 
@@ -27,12 +32,12 @@ namespace CodeTestApi.Application.Commands.Vehicles
             var userId = request.ClaimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId is null)
             {
-                throw new UnauthorizedAccessException("Couldn't find user id");
+                throw new UnauthorizedAccessException("User not found");
             }
-
+            Console.WriteLine($"UserId = {userId}");
             var hasRentedVehicles = await _vehicleRepository.VerifyRentedVehiclesByUserAsync(userId);
 
-            if (hasRentedVehicles) 
+            if (hasRentedVehicles)
             {
                 throw new InvalidOperationException("User can't rent more than one vehicle at a time");
             }
@@ -40,12 +45,23 @@ namespace CodeTestApi.Application.Commands.Vehicles
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
             if (vehicle is null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Vehicle not found");
             }
-            vehicle.IsAvailable = false;
-            vehicle.RentedBy = userId;
 
-            await _vehicleRepository.UpdateVehicleAsync(vehicle);
+            var isVehiculeAvailable = await _vehicleRepository.VerifyVehiculeAvailabilityAsync(request.Id, request.StartDate, request.EndDate);
+            if (!isVehiculeAvailable)
+            {
+                throw new InvalidOperationException("Vehicle is not available for the selected period of time");
+            }
+
+            var rentalPeriod = new RentalPeriod
+            {
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                RentedBy = userId
+            };
+            
+            await _vehicleRepository.RentVehicleAsync(request.Id, rentalPeriod);
             return Unit.Value;
         }
     }

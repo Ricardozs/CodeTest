@@ -9,8 +9,8 @@ namespace CodeTestApi.Application.Commands.Vehicles
         public required string Id { get; set; }
         public required string Brand { get; set; }
         public required string Model { get; set; }
+        public long PrincePerDay { get; set; }
         public DateTime ManufactureDate { get; set; }
-        public bool IsAvailable { get; set; }
     }
 
     public class UpdateVehicleHandler : BaseVehicleHandler<UpdateVehicleCommand, Unit>
@@ -24,12 +24,12 @@ namespace CodeTestApi.Application.Commands.Vehicles
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
             if (vehicle is null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Vehicle not found");
             }
             vehicle.Brand = request.Brand;
             vehicle.Model = request.Model;
             vehicle.ManufactureDate = request.ManufactureDate;
-            vehicle.IsAvailable = request.IsAvailable;
+            vehicle.PricePerDay = request.PrincePerDay;
 
             await _vehicleRepository.UpdateVehicleAsync(vehicle);
 

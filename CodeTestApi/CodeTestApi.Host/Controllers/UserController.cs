@@ -25,8 +25,8 @@ namespace CodeTestApi.Host.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserCommand command)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
             try
             {

@@ -18,16 +18,16 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-  angular:
-    build:
-      context: ./CodeTestFrontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./CodeTestFrontend:/app  # Monta solo el código fuente en la carpeta correcta
-      - /app/node_modules  # Mantén la carpeta de node_modules separada
-    ports:
-      - "4200:4200"
-    command: npm run start
+  # angular:
+  #   build:
+  #     context: ./CodeTestFrontend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./CodeTestFrontend:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - "4200:4200"
+  #   command: npm run start
 
 volumes:
   mongo-data:

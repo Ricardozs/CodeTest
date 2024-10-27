@@ -46,7 +46,6 @@ namespace CodeTestApi.Application.Commands.Users
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-            return "";
         }
     }
 }

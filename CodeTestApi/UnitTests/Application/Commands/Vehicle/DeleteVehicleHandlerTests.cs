@@ -17,7 +17,8 @@ namespace UnitTests.Application.Commands
             Brand = "someBrand",
             Model = "someModel",
             ManufactureDate = DateTime.Now,
-            IsAvailable = true
+            RentalPeriods = [],
+            PricePerDay = 20
         };
         #endregion
 

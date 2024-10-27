@@ -9,3 +9,4 @@ C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Domain\obj\Debug\net8.
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Domain\obj\Debug\net8.0\refint\CodeTestApi.Domain.dll
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Domain\obj\Debug\net8.0\CodeTestApi.Domain.pdb
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Domain\obj\Debug\net8.0\ref\CodeTestApi.Domain.dll
+C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Domain\obj\Debug\net8.0\CodeTestApi.Domain.sourcelink.json

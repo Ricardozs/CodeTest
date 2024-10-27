@@ -23,7 +23,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
         {
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
             if (vehicle is null) {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Vehicle not found");
             }
             await _vehicleRepository.DeleteVehicleAsync(request.Id);
             return Unit.Value;

@@ -362,3 +362,4 @@ C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Host\obj\Debug\net8.0\
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Host\obj\Debug\net8.0\CodeTestApi.Host.pdb
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Host\obj\Debug\net8.0\CodeTestApi.Host.genruntimeconfig.cache
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Host\obj\Debug\net8.0\ref\CodeTestApi.Host.dll
+C:\Users\ricar\Documents\CodeTest\CodeTestApi\CodeTestApi.Host\obj\Debug\net8.0\CodeTestApi.Host.sourcelink.json

@@ -117,3 +117,4 @@ C:\Users\ricar\Documents\CodeTest\CodeTestApi\UnitTests\obj\Debug\net8.0\refint\
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\UnitTests\obj\Debug\net8.0\UnitTests.pdb
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\UnitTests\obj\Debug\net8.0\UnitTests.genruntimeconfig.cache
 C:\Users\ricar\Documents\CodeTest\CodeTestApi\UnitTests\obj\Debug\net8.0\ref\UnitTests.dll
+C:\Users\ricar\Documents\CodeTest\CodeTestApi\UnitTests\obj\Debug\net8.0\UnitTests.sourcelink.json

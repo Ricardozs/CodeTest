@@ -23,7 +23,7 @@ namespace CodeTestApi.Host.Controllers
             try
             {
                 var token = await _mediator.Send(command);
-                return Ok(new { Token = token });
+                return Ok(token);
             }
             catch (UnauthorizedAccessException)
             {
