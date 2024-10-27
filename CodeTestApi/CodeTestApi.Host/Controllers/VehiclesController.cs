@@ -5,19 +5,15 @@ using CodeTestApi.Application.Queries.Vehicles;
 using CodeTestApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using CodeTestApi.Host.DTO;
+using CodeTestApi.Host.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class VehiclesController : ControllerBase
+public class VehiclesController : RentalApiControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly ILogger<VehiclesController> _logger;
-
-    public VehiclesController(IMediator mediator, ILogger<VehiclesController> logger)
+    public VehiclesController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
-        _logger = logger;
     }
 
     [Authorize(Roles = "Admin")]
@@ -108,12 +104,12 @@ public class VehiclesController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete("vehicle/rent/cancel")]
-    public async Task<IActionResult> CancelRent([FromBody] RentedVehicle request)
+    [HttpDelete("vehicle/rent/{id}")]
+    public async Task<IActionResult> CancelRent(string id)
     {
         try
         {
-            await _mediator.Send(new CancelRentCommand(request.VehicleId, request.UserId));
+            await _mediator.Send(new CancelRentCommand(id, User));
             return NoContent();
         }
         catch (KeyNotFoundException)

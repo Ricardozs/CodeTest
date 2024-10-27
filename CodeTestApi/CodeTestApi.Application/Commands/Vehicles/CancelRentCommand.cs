@@ -1,22 +1,18 @@
 ﻿using CodeTestApi.Application.Base_Handlers;
 using CodeTestApi.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace CodeTestApi.Application.Commands.Vehicles
 {
     public class CancelRentCommand : IRequest<Unit>
     {
         public string VehicleId { get; set; }
-        public string UserId { get; set; }
-        public CancelRentCommand(string vehicleId, string userId) 
+        public ClaimsPrincipal ClaimsPrincipal { get; set; }
+        public CancelRentCommand(string vehicleId, ClaimsPrincipal claimsPrincipal) 
         {
             VehicleId = vehicleId;
-            UserId = userId;
+            ClaimsPrincipal = claimsPrincipal;
         }
     }
 
@@ -29,9 +25,15 @@ namespace CodeTestApi.Application.Commands.Vehicles
 
         public override async Task<Unit> Handle(CancelRentCommand request, CancellationToken cancellationToken)
         {
+            var userId = request.ClaimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+            {
+                throw new UnauthorizedAccessException("User not found");
+            }
+
             await ValidateVehicleExists(request.VehicleId);
 
-            await _vehicleRepository.CancelRentAsync(request.VehicleId, request.UserId);
+            await _vehicleRepository.CancelRentAsync(request.VehicleId, userId);
 
             return Unit.Value;
         }

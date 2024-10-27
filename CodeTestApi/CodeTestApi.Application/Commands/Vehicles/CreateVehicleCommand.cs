@@ -4,7 +4,7 @@ using CodeTestApi.Domain.Interfaces;
 using MediatR;
 
 namespace CodeTestApi.Application.Commands.Vehicles;
-public class CreateVehicleCommand : IRequest<Vehicle>
+public class CreateVehicleCommand : IRequest<string>
 {
     public required string Brand { get; set; }
     public required string Model { get; set; }
@@ -12,13 +12,13 @@ public class CreateVehicleCommand : IRequest<Vehicle>
     public long PricePerDay { get; set; }
 }
 
-public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, Vehicle>
+public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, string>
 {
     public CreateVehicleHandler(IVehicleRepository vehicleRepository): base(vehicleRepository)
     {
     }
 
-    public override async Task<Vehicle> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)
+    public override async Task<string> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)
     {
         var currentYear = DateTime.Now.Year;
         if (request.ManufactureDate.Year < currentYear - 5)
@@ -38,6 +38,6 @@ public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, Veh
 
         await _vehicleRepository.AddVehicleAsync(vehicle);
 
-        return vehicle;
+        return vehicle.Id;
     }
 }

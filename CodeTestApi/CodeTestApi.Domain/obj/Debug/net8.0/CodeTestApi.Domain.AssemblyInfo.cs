@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CodeTestApi.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5425652db772a315460b946901894abee06877de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4018f8850c2d4e718e351c8adbca521fcc411601")]
 [assembly: System.Reflection.AssemblyProductAttribute("CodeTestApi.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CodeTestApi.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

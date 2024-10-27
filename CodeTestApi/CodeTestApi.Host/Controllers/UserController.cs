@@ -9,17 +9,21 @@ namespace CodeTestApi.Host.Controllers
     [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : RentalApiControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator): base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        {
+            var userId = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);
+        }
+
+        [HttpPost("registry")]
+        public async Task<IActionResult> CreateUserCustomer([FromBody] CreateUserCustomerCommand command)
         {
             var userId = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);

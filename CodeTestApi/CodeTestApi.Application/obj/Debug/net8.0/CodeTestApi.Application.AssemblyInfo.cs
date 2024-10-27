@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CodeTestApi.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+feeed813ad07ab83aba354df473b9e3187596105")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4018f8850c2d4e718e351c8adbca521fcc411601")]
 [assembly: System.Reflection.AssemblyProductAttribute("CodeTestApi.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CodeTestApi.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
