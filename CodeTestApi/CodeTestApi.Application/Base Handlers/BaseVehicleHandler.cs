@@ -1,4 +1,5 @@
-﻿using CodeTestApi.Domain.Interfaces;
+﻿using CodeTestApi.Domain.Entities;
+using CodeTestApi.Domain.Interfaces;
 using MediatR;
 
 namespace CodeTestApi.Application.Base_Handlers
@@ -13,6 +14,17 @@ namespace CodeTestApi.Application.Base_Handlers
         public virtual Task<Y> Handle(T request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual async Task<Vehicle> ValidateVehicleExists(string vehicleId) 
+        {
+            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(vehicleId);
+            if (vehicle is null)
+            {
+                throw new KeyNotFoundException("Vehicle not found");
+            }
+
+            return vehicle;
         }
     }
 }

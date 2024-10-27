@@ -34,7 +34,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
             {
                 throw new UnauthorizedAccessException("User not found");
             }
-            Console.WriteLine($"UserId = {userId}");
+            
             var hasRentedVehicles = await _vehicleRepository.VerifyRentedVehiclesByUserAsync(userId);
 
             if (hasRentedVehicles)
@@ -42,11 +42,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
                 throw new InvalidOperationException("User can't rent more than one vehicle at a time");
             }
 
-            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
-            if (vehicle is null)
-            {
-                throw new KeyNotFoundException("Vehicle not found");
-            }
+            await ValidateVehicleExists(request.Id);
 
             var isVehiculeAvailable = await _vehicleRepository.VerifyVehiculeAvailabilityAsync(request.Id, request.StartDate, request.EndDate);
             if (!isVehiculeAvailable)

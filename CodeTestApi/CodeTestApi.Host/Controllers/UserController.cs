@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeTestApi.Host.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -23,6 +23,28 @@ namespace CodeTestApi.Host.Controllers
         {
             var userId = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                var user = await _mediator.Send(new GetUserByIdQuery(id));
+                return Ok(user);
+            }
+            catch (KeyNotFoundException)
+            {
+
+                return NotFound();
+            }
+        }
+
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _mediator.Send(new GetUsersQuery());
+            return Ok(users);
         }
 
         [HttpPut]
@@ -47,21 +69,6 @@ namespace CodeTestApi.Host.Controllers
             {
                 await _mediator.Send(new DeleteUserCommand(id));
                 return NoContent();
-            }
-            catch (KeyNotFoundException)
-            {
-
-                return NotFound();
-            }
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(string id)
-        {
-            try
-            {
-                var user = await _mediator.Send(new GetUserByIdQuery(id));
-                return Ok(user);
             }
             catch (KeyNotFoundException)
             {

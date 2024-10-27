@@ -112,8 +112,6 @@ public class Program
 
             var vehicleRepository = scope.ServiceProvider.GetRequiredService<IVehicleRepository>();
             await DatabaseSeeder.SeedVehiclesAsync(vehicleRepository);
-
-            Console.WriteLine("Data Seeding Succesful");
         }
 
         app.UseSwagger();

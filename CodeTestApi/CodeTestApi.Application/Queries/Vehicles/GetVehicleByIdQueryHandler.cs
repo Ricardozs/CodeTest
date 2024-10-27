@@ -21,11 +21,7 @@ namespace CodeTestApi.Application.Queries.Vehicles
 
         public override async Task<Vehicle> Handle(GetVehicleByIdQuery request, CancellationToken token)
         {
-            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
-            if (vehicle is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var vehicle = await ValidateVehicleExists(request.Id);
             return vehicle;
         }
     }

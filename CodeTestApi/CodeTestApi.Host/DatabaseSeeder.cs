@@ -9,34 +9,34 @@ namespace CodeTestApi.Host
         public static async Task SeedVehiclesAsync(IVehicleRepository vehicleRepository)
         {
             var existingVehicles = await vehicleRepository.GetAllVehiclesAsync();
-            
+
             if (!existingVehicles.Any())
             {
                 var seedVehicles = new List<Vehicle>
                 {
                     new Vehicle
-                    { 
-                        Id = Guid.NewGuid().ToString(), 
-                        Brand = "Toyota", 
-                        Model = "Corolla", 
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Brand = "Toyota",
+                        Model = "Corolla",
                         ManufactureDate = new DateTime(2020, 6, 12),
                         RentalPeriods = [],
                         PricePerDay = 20
                     },
-                    new Vehicle 
-                    { 
-                        Id = Guid.NewGuid().ToString(), 
-                        Brand = "Honda", 
-                        Model = "Civic", 
+                    new Vehicle
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Brand = "Honda",
+                        Model = "Civic",
                         ManufactureDate = new DateTime(2021, 5, 15),
                         RentalPeriods = [],
                         PricePerDay = 30
                     },
                     new Vehicle
                     {
-                        Id = Guid.NewGuid().ToString(), 
-                        Brand = "Ford", 
-                        Model = "Figo", 
+                        Id = Guid.NewGuid().ToString(),
+                        Brand = "Ford",
+                        Model = "Figo",
                         ManufactureDate = new DateTime(2019, 8, 20),
                         RentalPeriods = [],
                         PricePerDay = 40
@@ -47,6 +47,7 @@ namespace CodeTestApi.Host
                 {
                     await vehicleRepository.AddVehicleAsync(vehicle);
                 }
+                Console.WriteLine("Vehicle Data Seeding Succesful");
             }
         }
 
@@ -58,53 +59,54 @@ namespace CodeTestApi.Host
             {
                 var adminPassword = BCrypt.Net.BCrypt.HashPassword("AdminPassword");
                 var userPassword = BCrypt.Net.BCrypt.HashPassword("UserPassword");
-                var adminUser = new User
+                var seedUsers = new List<User>
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    FirstName = "Admin",
-                    LastName = "User",
-                    Email = "admin@example.com",
-                    Phone = "674-124567",
-                    HashPassword = adminPassword,
-                    UserType = UserType.Admin
+                    new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FirstName = "Admin",
+                        LastName = "User",
+                        Email = "admin@example.com",
+                        Phone = "674-124567",
+                        HashPassword = adminPassword,
+                        UserType = UserType.Admin
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FirstName = "Ricardo",
+                        LastName = "Sanchez",
+                        Email = "ric@gmail.com",
+                        Phone = "674-567812",
+                        HashPassword = userPassword,
+                        UserType = UserType.User
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FirstName = "Juan",
+                        LastName = "Perez",
+                        Email = "juan@gmail.com",
+                        Phone = "674-567812",
+                       HashPassword = userPassword,
+                        UserType = UserType.User
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FirstName = "Roberto",
+                        LastName = "Gonzalez",
+                        Email = "rob@gmail.com",
+                        Phone = "674-567812",
+                        HashPassword = userPassword,
+                        UserType = UserType.User
+                    }
                 };
-
-                var standardUser = new User
+                foreach (var user in seedUsers)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    FirstName = "Ricardo",
-                    LastName = "Sanchez",
-                    Email = "ric@gmail.com",
-                    Phone = "674-567812",
-                    HashPassword = userPassword,
-                    UserType = UserType.User
-                };
-
-                var standardUser2 = new User
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    FirstName = "Juan",
-                    LastName = "Perez",
-                    Email = "juan@gmail.com",
-                    Phone = "674-567812",
-                    HashPassword = userPassword,
-                    UserType = UserType.User
-                };
-
-                var standardUser3 = new User
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    FirstName = "Roberto",
-                    LastName = "Gonzalez",
-                    Email = "rob@gmail.com",
-                    Phone = "674-567812",
-                    HashPassword = userPassword,
-                    UserType = UserType.User
-                };
-                await userRepository.AddUserAsync(adminUser);
-                await userRepository.AddUserAsync(standardUser);
-                await userRepository.AddUserAsync(standardUser2);
-                await userRepository.AddUserAsync(standardUser3);
+                    await userRepository.AddUserAsync(user);
+                }
+                Console.WriteLine("User Data Seeding Succesful");
             }
         }
     }

@@ -21,10 +21,8 @@ namespace CodeTestApi.Application.Commands.Vehicles
 
         public override async Task<Unit> Handle(DeleteVehicleCommand request, CancellationToken token)
         {
-            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(request.Id);
-            if (vehicle is null) {
-                throw new KeyNotFoundException("Vehicle not found");
-            }
+            var vehicle = await ValidateVehicleExists(request.Id);
+
             await _vehicleRepository.DeleteVehicleAsync(request.Id);
             return Unit.Value;
         }

@@ -92,12 +92,28 @@ public class VehiclesController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpPatch("vehicle/return/{vehicleId}")]
-    public async Task<IActionResult> ReturnVehicle(string vehicleId, [FromBody] string userdId)
+    [HttpPatch("vehicle/rent/return")]
+    public async Task<IActionResult> ReturnVehicle([FromBody] RentedVehicle request)
     {
         try
         {
-            await _mediator.Send(new ReturnVehicleCommand(vehicleId, userdId));
+            await _mediator.Send(new ReturnVehicleCommand(request.VehicleId, request.UserId));
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+
+            return NotFound();
+        }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("vehicle/rent/cancel")]
+    public async Task<IActionResult> CancelRent([FromBody] RentedVehicle request)
+    {
+        try
+        {
+            await _mediator.Send(new CancelRentCommand(request.VehicleId, request.UserId));
             return NoContent();
         }
         catch (KeyNotFoundException)
