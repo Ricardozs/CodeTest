@@ -33,7 +33,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// Initializes a new instance of the <see cref="DeleteVehicleHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public DeleteVehicleHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public DeleteVehicleHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 
@@ -46,9 +46,9 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// <exception cref="KeyNotFoundException">Thrown when the vehicle is not found.</exception>
         public override async Task<Unit> Handle(DeleteVehicleCommand request, CancellationToken token)
         {
-            var vehicle = await ValidateVehicleExists(request.Id);
+            var vehicle = await _vehicleDomainService.GetVehicleOrThrowAsync(request.Id);
 
-            await _vehicleRepository.DeleteVehicleAsync(request.Id);
+            await _vehicleRepository.DeleteVehicleAsync(vehicle.Id);
             return Unit.Value;
         }
     }

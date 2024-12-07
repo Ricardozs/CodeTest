@@ -1,4 +1,5 @@
 ﻿using CodeTestApi.Application.Base_Handlers;
+using CodeTestApi.Application.Validation_Services;
 using CodeTestApi.Domain.Entities;
 using CodeTestApi.Domain.Interfaces;
 using MediatR;
@@ -40,7 +41,7 @@ public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, str
     /// Initializes a new instance of the <see cref="CreateVehicleHandler"/> class.
     /// </summary>
     /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-    public CreateVehicleHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+    public CreateVehicleHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
     {
     }
 
@@ -53,8 +54,8 @@ public class CreateVehicleHandler : BaseVehicleHandler<CreateVehicleCommand, str
     /// <exception cref="InvalidOperationException">Thrown when the vehicle is more than 5 years old.</exception>
     public override async Task<string> Handle(CreateVehicleCommand request, CancellationToken cancellationToken)
     {
-        var currentYear = DateTime.Now.Year;
-        if (request.ManufactureDate.Year < currentYear - 5)
+        var isVehicleManufactureDateValid = VehicleValidationService.IsVehicleManufactureDateValid(request.ManufactureDate);
+        if (isVehicleManufactureDateValid)
         {
             throw new InvalidOperationException("Vehicle cannot be more than 5 years older");
         }

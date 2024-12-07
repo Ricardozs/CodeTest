@@ -34,7 +34,7 @@ namespace CodeTestApi.Application.Queries.Vehicles
         /// Initializes a new instance of the <see cref="GetVehicleByIdQueryHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public GetVehicleByIdQueryHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public GetVehicleByIdQueryHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 
@@ -47,7 +47,7 @@ namespace CodeTestApi.Application.Queries.Vehicles
         /// <exception cref="KeyNotFoundException">Thrown when the vehicle is not found in the repository.</exception>
         public override async Task<Vehicle> Handle(GetVehicleByIdQuery request, CancellationToken token)
         {
-            var vehicle = await ValidateVehicleExists(request.Id);
+            var vehicle = await _vehicleDomainService.GetVehicleOrThrowAsync(request.Id);
             return vehicle;
         }
     }

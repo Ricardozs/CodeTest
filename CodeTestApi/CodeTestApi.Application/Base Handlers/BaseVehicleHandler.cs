@@ -17,13 +17,16 @@ namespace CodeTestApi.Application.Base_Handlers
         /// </summary>
         protected readonly IVehicleRepository _vehicleRepository;
 
+        protected readonly IVehicleDomainService _vehicleDomainService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseVehicleHandler{T, Y}"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        protected BaseVehicleHandler(IVehicleRepository vehicleRepository)
+        protected BaseVehicleHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService)
         {
             _vehicleRepository = vehicleRepository;
+            _vehicleDomainService = vehicleDomainService;
         }
 
         /// <summary>
@@ -36,23 +39,6 @@ namespace CodeTestApi.Application.Base_Handlers
         public virtual Task<Y> Handle(T request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Validates if a vehicle with the specified ID exists in the repository.
-        /// </summary>
-        /// <param name="vehicleId">The unique identifier of the vehicle to validate.</param>
-        /// <returns>The vehicle if found, or throws a KeyNotFoundException if not found.</returns>
-        /// <exception cref="KeyNotFoundException">Thrown when the vehicle is not found in the repository.</exception>
-        public virtual async Task<Vehicle> ValidateVehicleExists(string vehicleId)
-        {
-            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(vehicleId);
-            if (vehicle is null)
-            {
-                throw new KeyNotFoundException("Vehicle not found");
-            }
-
-            return vehicle;
         }
     }
 }

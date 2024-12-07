@@ -30,7 +30,7 @@ namespace CodeTestApi.Application.Queries.Vehicles
         /// Initializes a new instance of the <see cref="GetAvailableVehiclesQueryHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public GetAvailableVehiclesQueryHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public GetAvailableVehiclesQueryHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 

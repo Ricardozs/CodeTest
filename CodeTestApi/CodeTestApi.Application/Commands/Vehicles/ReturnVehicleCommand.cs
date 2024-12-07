@@ -1,4 +1,5 @@
 ﻿using CodeTestApi.Application.Base_Handlers;
+using CodeTestApi.Application.Domain_Services;
 using CodeTestApi.Domain.Interfaces;
 using MediatR;
 
@@ -40,7 +41,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// Initializes a new instance of the <see cref="ReturnVehicleHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public ReturnVehicleHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public ReturnVehicleHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 
@@ -52,9 +53,9 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// <returns>An empty Unit value upon successful return.</returns>
         public override async Task<Unit> Handle(ReturnVehicleCommand request, CancellationToken cancellationToken)
         {
-            await ValidateVehicleExists(request.VehicleId);
+            var vehicle = await _vehicleDomainService.GetVehicleOrThrowAsync(request.VehicleId);
 
-            await _vehicleRepository.ReturnVehicleAsync(request.VehicleId, request.UserId);
+            await _vehicleRepository.ReturnVehicleAsync(vehicle.Id, request.UserId);
 
             return Unit.Value;
         }

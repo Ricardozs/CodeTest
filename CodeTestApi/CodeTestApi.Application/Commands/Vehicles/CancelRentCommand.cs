@@ -41,7 +41,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// Initializes a new instance of the <see cref="CancelRentHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public CancelRentHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public CancelRentHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 
@@ -60,9 +60,9 @@ namespace CodeTestApi.Application.Commands.Vehicles
                 throw new UnauthorizedAccessException("User not found");
             }
 
-            await ValidateVehicleExists(request.VehicleId);
+            var vehicle = await _vehicleDomainService.GetVehicleOrThrowAsync(request.VehicleId);
 
-            await _vehicleRepository.CancelRentAsync(request.VehicleId, userId);
+            await _vehicleRepository.CancelRentAsync(vehicle.Id, userId);
 
             return Unit.Value;
         }

@@ -1,4 +1,5 @@
 ﻿using CodeTestApi.Application.Base_Handlers;
+using CodeTestApi.Application.Domain_Services;
 using CodeTestApi.Domain.Entities;
 using CodeTestApi.Domain.Interfaces;
 using MediatR;
@@ -56,7 +57,7 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// Initializes a new instance of the <see cref="RentVehicleHandler"/> class.
         /// </summary>
         /// <param name="vehicleRepository">The vehicle repository for handling data operations.</param>
-        public RentVehicleHandler(IVehicleRepository vehicleRepository) : base(vehicleRepository)
+        public RentVehicleHandler(IVehicleRepository vehicleRepository, IVehicleDomainService vehicleDomainService) : base(vehicleRepository, vehicleDomainService)
         {
         }
 
@@ -70,26 +71,11 @@ namespace CodeTestApi.Application.Commands.Vehicles
         /// <exception cref="InvalidOperationException">Thrown when the user has already rented a vehicle or the vehicle is unavailable.</exception>
         public override async Task<Unit> Handle(RentVehicleCommand request, CancellationToken cancellationToken)
         {
-            var userId = request.ClaimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId is null)
-            {
-                throw new UnauthorizedAccessException("User not found");
-            }
+            var userId = await _vehicleDomainService.ValidateUserDoesNotHasRentedVehiclesAsync(request.ClaimsPrincipal);
 
-            var hasRentedVehicles = await _vehicleRepository.VerifyRentedVehiclesByUserAsync(userId);
+            var vehicle = await _vehicleDomainService.GetVehicleOrThrowAsync(request.Id);
 
-            if (hasRentedVehicles)
-            {
-                throw new InvalidOperationException("User can't rent more than one vehicle at a time");
-            }
-
-            await ValidateVehicleExists(request.Id);
-
-            var isVehiculeAvailable = await _vehicleRepository.VerifyVehiculeAvailabilityAsync(request.Id, request.StartDate, request.EndDate);
-            if (!isVehiculeAvailable)
-            {
-                throw new InvalidOperationException("Vehicle is not available for the selected period of time");
-            }
+            await _vehicleDomainService.ValidateVehicleAvailabilityAsync(vehicle.Id, request.StartDate, request.EndDate);
 
             var rentalPeriod = new RentalPeriod
             {
