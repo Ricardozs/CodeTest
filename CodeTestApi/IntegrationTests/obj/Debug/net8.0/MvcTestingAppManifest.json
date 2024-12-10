@@ -1,6 +1,0 @@
-{
-  "CodeTestApi.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\ricar\\Documents\\CodeTest\\CodeTestApi\\CodeTestApi.Application",
-  "CodeTestApi.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\ricar\\Documents\\CodeTest\\CodeTestApi\\CodeTestApi.Domain",
-  "CodeTestApi.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\ricar\\Documents\\CodeTest\\CodeTestApi\\CodeTestApi.Host",
-  "CodeTestApi.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\ricar\\Documents\\CodeTest\\CodeTestApi\\CodeTestApi.Infrastructure"
-}
