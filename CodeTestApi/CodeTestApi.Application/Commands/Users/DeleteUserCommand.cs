@@ -33,7 +33,7 @@ namespace CodeTestApi.Application.Commands.Users
         /// Initializes a new instance of the <see cref="DeleteUserHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public DeleteUserHandler(IUserRepository userRepository) : base(userRepository)
+        public DeleteUserHandler(IUserRepository userRepository, IUserDomainService userDomainService) : base(userRepository, userDomainService)
         {
         }
 
@@ -46,11 +46,7 @@ namespace CodeTestApi.Application.Commands.Users
         /// <exception cref="KeyNotFoundException">Thrown when the user is not found.</exception>
         public override async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByIdAsync(request.Id);
-            if (user is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var user = await _userDomainService.GetUserOrThrowAsync(request.Id);
 
             await _userRepository.DeleteUserAsync(request.Id);
 

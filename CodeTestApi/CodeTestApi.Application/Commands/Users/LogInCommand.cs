@@ -5,6 +5,7 @@ using System.Text;
 using CodeTestApi.Application.Base_Handlers;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using CodeTestApi.Application.Helpers;
 
 namespace CodeTestApi.Application.Commands.Users
 {
@@ -29,12 +30,15 @@ namespace CodeTestApi.Application.Commands.Users
     /// </summary>
     public class LogInHandler : BaseUserHandler<LogInCommand, string>
     {
+        private readonly IJwtHelper _jwtHelper;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LogInHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public LogInHandler(IUserRepository userRepository) : base(userRepository)
+        public LogInHandler(IUserRepository userRepository, IUserDomainService userDomainService, IJwtHelper jwtHelper) : base(userRepository, userDomainService)
         {
+            _jwtHelper = jwtHelper;
         }
 
         /// <summary>
@@ -46,29 +50,9 @@ namespace CodeTestApi.Application.Commands.Users
         /// <exception cref="UnauthorizedAccessException">Thrown when the credentials are invalid.</exception>
         public override async Task<string> Handle(LogInCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmailAsync(request.Email);
+            var userClaims = await _userDomainService.ValidateUserCredentialsAsync(request.Email, request.Password);
 
-            if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.HashPassword))
-            {
-                throw new UnauthorizedAccessException("Invalid credentials");
-            }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("#MySuperSecretKeyThatNoOneWillGuessAndSuperLongEnough123456789!$");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(
-                [
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.UserType.ToString())
-                ]),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
+            return _jwtHelper.GenerateToken(userClaims, DateTime.UtcNow.AddHours(1));
         }
     }
 }

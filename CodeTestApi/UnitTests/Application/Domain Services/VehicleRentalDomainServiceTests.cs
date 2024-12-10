@@ -13,12 +13,12 @@ namespace CodeTestApi.Tests.Domain_Services
     public class VehicleRentalDomainServiceTests
     {
         private readonly IVehicleRepository _mockRepository;
-        private readonly VehicleRentalDomainService _service;
+        private readonly VehicleDomainService _service;
 
         public VehicleRentalDomainServiceTests()
         {
             _mockRepository = Substitute.For<IVehicleRepository>();
-            _service = new VehicleRentalDomainService(_mockRepository);
+            _service = new VehicleDomainService(_mockRepository);
         }
 
         [Fact]

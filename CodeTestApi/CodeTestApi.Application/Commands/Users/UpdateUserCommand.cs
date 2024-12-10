@@ -55,7 +55,7 @@ namespace CodeTestApi.Application.Commands.Users
         /// Initializes a new instance of the <see cref="UpdateUserHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public UpdateUserHandler(IUserRepository userRepository) : base(userRepository)
+        public UpdateUserHandler(IUserRepository userRepository, IUserDomainService userDomainService) : base(userRepository, userDomainService)
         {
         }
 
@@ -68,11 +68,7 @@ namespace CodeTestApi.Application.Commands.Users
         /// <exception cref="KeyNotFoundException">Thrown when the user is not found.</exception>
         public override async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByIdAsync(request.Id);
-            if (user is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var user = await _userDomainService.GetUserOrThrowAsync(request.Id);
 
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;

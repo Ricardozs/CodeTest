@@ -11,7 +11,20 @@
     docker-compose up --build
 
 4. Open in your browser:
-   ```arduino
+   ```plaintext
    http://localhost:8080
 
    after the build finishes.
+
+# Log in Credentials
+The project has two default users created for testing purposes:
+
+Admin User
+email: "admin@example.com"
+password: "AdminPassword"
+
+Regular User
+email: "ric@gmail.com"
+password: "UserPassword"
+
+Feel free to use these accounts to explore the system's functionality.

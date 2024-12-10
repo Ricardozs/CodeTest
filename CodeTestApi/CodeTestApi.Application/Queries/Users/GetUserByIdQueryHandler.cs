@@ -34,7 +34,7 @@ namespace CodeTestApi.Application.Queries.Users
         /// Initializes a new instance of the <see cref="GetUserByIdQueryHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public GetUserByIdQueryHandler(IUserRepository userRepository) : base(userRepository)
+        public GetUserByIdQueryHandler(IUserRepository userRepository, IUserDomainService userDomainService) : base(userRepository, userDomainService)
         {
         }
 
@@ -47,11 +47,7 @@ namespace CodeTestApi.Application.Queries.Users
         /// <exception cref="KeyNotFoundException">Thrown when the user is not found in the repository.</exception>
         public override async Task<User> Handle(GetUserByIdQuery request, CancellationToken token)
         {
-            var user = await _userRepository.GetUserByIdAsync(request.Id);
-            if (user is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var user = await _userDomainService.GetUserOrThrowAsync(request.Id);
             return user;
         }
     }

@@ -1,3 +1,6 @@
+using CodeTestApi.Application;
+using CodeTestApi.Application.Domain_Services;
+using CodeTestApi.Application.Helpers;
 using CodeTestApi.Application.Queries.Vehicles;
 using CodeTestApi.Domain.Interfaces;
 using CodeTestApi.Host;
@@ -26,7 +29,15 @@ public class Program
             });
         });
 
-        var key = Encoding.UTF8.GetBytes("#MySuperSecretKeyThatNoOneWillGuessAndSuperLongEnough123456789!$");
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+        if (jwtSettings == null)
+        {
+            throw new InvalidOperationException("JwtSettings section is missing or improperly configured in appsettings.json.");
+        }
+
+        var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 
         builder.Services.AddAuthentication(options =>
         {
@@ -67,6 +78,9 @@ public class Program
 
         builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IVehicleDomainService, VehicleDomainService>();
+        builder.Services.AddScoped<IUserDomainService, UserDomainService>();
+        builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
 
         // Add other services
         builder.Services.AddControllers();

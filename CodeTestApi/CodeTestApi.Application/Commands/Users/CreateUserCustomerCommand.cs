@@ -46,7 +46,7 @@ namespace CodeTestApi.Application.Commands.Users
         /// Initializes a new instance of the <see cref="CreateUserCustomerHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public CreateUserCustomerHandler(IUserRepository userRepository) : base(userRepository)
+        public CreateUserCustomerHandler(IUserRepository userRepository, IUserDomainService userDomainService) : base(userRepository, userDomainService)
         {
         }
 

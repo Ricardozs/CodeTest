@@ -1,4 +1,4 @@
-﻿namespace CodeTestApi.Application.Validation_Services
+﻿namespace CodeTestApi.Application.Helpers
 {
     public class VehicleValidationService
     {

@@ -22,7 +22,7 @@ namespace CodeTestApi.Application.Queries.Users
         /// Initializes a new instance of the <see cref="GetUsersQueryHandler"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        public GetUsersQueryHandler(IUserRepository userRepository) : base(userRepository)
+        public GetUsersQueryHandler(IUserRepository userRepository, IUserDomainService userDomainService) : base(userRepository, userDomainService)
         {
         }
 

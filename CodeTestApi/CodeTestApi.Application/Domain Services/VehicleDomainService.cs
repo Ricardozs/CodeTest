@@ -4,11 +4,11 @@ using System.Security.Claims;
 
 namespace CodeTestApi.Application.Domain_Services
 {
-    public class VehicleRentalDomainService : IVehicleDomainService
+    public class VehicleDomainService : IVehicleDomainService
     {
         private readonly IVehicleRepository _vehicleRepository;
 
-        public VehicleRentalDomainService(IVehicleRepository vehicleRepository)
+        public VehicleDomainService(IVehicleRepository vehicleRepository)
         {
             _vehicleRepository = vehicleRepository;
         }

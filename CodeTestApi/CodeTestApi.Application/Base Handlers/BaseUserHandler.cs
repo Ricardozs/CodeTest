@@ -16,13 +16,16 @@ namespace CodeTestApi.Application.Base_Handlers
         /// </summary>
         protected readonly IUserRepository _userRepository;
 
+        protected readonly IUserDomainService _userDomainService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseUserHandler{T, Y}"/> class.
         /// </summary>
         /// <param name="userRepository">The user repository for handling data operations.</param>
-        protected BaseUserHandler(IUserRepository userRepository)
+        protected BaseUserHandler(IUserRepository userRepository, IUserDomainService userDomainService)
         {
             _userRepository = userRepository;
+            _userDomainService = userDomainService;
         }
 
         /// <summary>
