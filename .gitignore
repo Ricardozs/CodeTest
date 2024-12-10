@@ -1,4 +1,4 @@
 node_modules/
 .vs/
-bin/
-obj/
+**/bin/
+**/obj/
